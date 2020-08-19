@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700,900&display=swap&subset=cyrillic"
+          rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="main.css">
+    <title>TODO List</title>
+    <script>
+        function doSend() {
+            console.log("button");
+        }
+    </script>
+</head>
+
+<body>
+<div class="container">
+
+    <div class="wrapper">
+        <div class="header">
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container, jumbotron__head">
+                    <h1 class="display-4">Планировщик задач</h1>
+                    <p class="lead">Это простое WEB-приложение для планирования дел</p>
+                </div>
+            </div>
+        </div>
+        <div class="wrapper__content">
+
+            <form>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Введите описание задачи</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                              placeholder="Описание задачи"
+                    ></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" onclick="return doSend()">Добавить
+                    задачу</button>
+            </form>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                <label class="form-check-label" for="defaultCheck1">
+                    Показать все задачи
+                </label>
+            </div>
+            <div class="alert alert-info" role="alert">
+                Список всех задач
+            </div>
+        </div>
+
+        <div class="footer">
+            <span class="footer">Вохмин Роман Александрович, 2020</span>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
