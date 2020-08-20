@@ -2,17 +2,15 @@ package ru.job4j.todo.service;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.query.Query;
 import ru.job4j.todo.persistence.Task;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-
-import static ru.job4j.todo.controller.TaskServlet.LOGGER;
+import java.util.function.Function;
 
 
 public class HibernateStore implements Store, AutoCloseable {
@@ -32,37 +30,51 @@ public class HibernateStore implements Store, AutoCloseable {
         return Lazy.INST;
     }
 
+    private <T> T tx(final Function<Session, T> command) {
+        final Session session = sf.openSession();
+        final Transaction tx = session.beginTransaction();
+        try {
+            T rsl = command.apply(session);
+            tx.commit();
+            return rsl;
+        } catch (final Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+
     @Override
     public void saveTask(Task task) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        session.save(task);
-        session.getTransaction().commit();
-        session.close();
+        this.tx(
+                session -> {
+                    session.createQuery("from Task");
+                    session.save(task);
+                    return null;
+                }
+        );
     }
 
     @Override
     public Collection<Task> findAllTasks() {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Query query = session.createQuery("from Task");
-        List<Task> tasks = new ArrayList<Task>(query.list());
-        session.getTransaction().commit();
-        session.close();
-        return tasks;
+        return this.tx(
+                session -> session.createQuery("from Task").list()
+        );
     }
 
     @Override
     public void updateTask(String id, boolean done) {
-        LOGGER.info("updateTask done = " + done);
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Query query = session.createQuery("update Task s set s.done = :newDone where s.id = :fId");
-        query.setParameter("fId", Integer.parseInt(id));
-        query.setParameter("newDone", done);
-        query.executeUpdate();
-        session.getTransaction().commit();
-        session.close();
+        this.tx(
+                session -> {
+                    final Query query = session.createQuery(
+                            "update Task s set s.done = :newDone where s.id = :fId");
+                    query.setParameter("fId", Integer.parseInt(id));
+                    query.setParameter("newDone", done);
+                    query.executeUpdate();
+                    return null;
+                }
+        );
     }
 
     @Override
