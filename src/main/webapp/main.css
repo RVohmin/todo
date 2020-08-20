@@ -29,12 +29,23 @@
     align-items: center;
 }
 
-input, textarea {
+input, button, textarea {
     outline: none;
+}
+textarea::-moz-placeholder {
+    color: red;
 }
 
 .form-control:focus {
     box-shadow: 0 0 0 0 black;
+}
+.form-group {
+    display: inline-block;
+    vertical-align: bottom;
+    width: 45%;
+}
+button {
+    margin-left: 40px;
 }
 .alert {
     display: flex;
