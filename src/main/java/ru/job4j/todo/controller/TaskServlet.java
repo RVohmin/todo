@@ -21,7 +21,6 @@ public class TaskServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        LOGGER.debug("in doGet ");
         List<Task> list = new ArrayList<>(HibernateStore.instOf().findAllTasks());
         String json = new Gson().toJson(list);
         LOGGER.info(json);
@@ -42,18 +41,13 @@ public class TaskServlet extends HttpServlet {
         boolean done = Boolean.parseBoolean((req.getParameter("done")));
         if (Integer.parseInt(id) != 0) {
             HibernateStore.instOf().updateTask(id, done);
-            LOGGER.info("!!!!!!!!!!!!!!!!!!" + done);
             return;
         }
-
-        LOGGER.info("Servlet doPost: describe: " + descText);
-
         LocalDateTime localDate = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String date = localDate.format(formatter);
         Timestamp timestamp = Timestamp.valueOf(localDate);
         LOGGER.info("Дата: " + date);
-
         Task task = new Task(Integer.parseInt(id), descText, timestamp, true);
         HibernateStore.instOf().saveTask(task);
     }
