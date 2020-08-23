@@ -4,6 +4,7 @@
 
 .jumbotron-fluid {
     padding: 0;
+    margin: 0;
 }
 
 .jumbotron__head {
@@ -12,7 +13,6 @@
     justify-content: center;
     align-items: center;
 }
-
 
 .form-check {
     padding-top: 30px;
@@ -32,6 +32,7 @@
 input, button, textarea {
     outline: none;
 }
+
 textarea::-moz-placeholder {
     color: red;
 }
@@ -39,17 +40,51 @@ textarea::-moz-placeholder {
 .form-control:focus {
     box-shadow: 0 0 0 0 black;
 }
+
 .form-group {
     display: inline-block;
     vertical-align: bottom;
     width: 45%;
 }
+
 button {
     margin-left: 40px;
 }
-.alert {
+
+.alert-primary {
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.form-check {
+    padding: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24px;
+}
+
+.form-check-input {
+    margin-top: .2rem;
+}
+
+.alert-info {
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert-success {
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

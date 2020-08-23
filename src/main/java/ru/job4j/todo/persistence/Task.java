@@ -20,23 +20,21 @@ public class Task {
     @Column (name = "done")
     private boolean done;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Task() {
     }
 
-    public Task(String describe, boolean done) {
-        this.describe = describe;
-        this.done = done;
-    }
-
-    public Task(int id, String describe, boolean done) {
-        this(describe, done);
+    public Task(int id, String describe, Timestamp created, boolean done, User user) {
         this.id = id;
+        this.describe = describe;
+        this.created = created;
+        this.done = done;
+        this.user = user;
     }
 
-    public Task(int id, String describe, Timestamp created, boolean done) {
-        this(id, describe, done);
-        this.created = created;
-    }
     public int getId() {
         return id;
     }
