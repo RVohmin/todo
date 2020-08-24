@@ -8,9 +8,9 @@ create table users
 create table item
 (
     id       serial primary key,
-    describe text,
-    created  timestamp,
-    done     boolean,
+    describe text not null,
+    created  timestamp not null,
+    done     boolean not null,
     user_id  int not null references users (id)
 );
 select item.describe, item.created, item.done, users.name from item join users on item.user_id =
