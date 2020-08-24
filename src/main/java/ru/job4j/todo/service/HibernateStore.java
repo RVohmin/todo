@@ -50,24 +50,18 @@ public class HibernateStore implements Store, AutoCloseable {
 
     @Override
     public void saveTask(Task task) {
-        tx(
-                session -> {
-                    session.createQuery("from Task");
-                    session.save(task);
-                    return null;
-                }
-        );
+        tx(session -> session.save(task));
     }
 
     @Override
     public Collection<Task> findAllTasks(int id) {
         return tx(
                 session -> {
-                    Query query = session.createQuery("from Task s where s.user.id = :fId");
-                    query.setParameter("fId", id);
+                    Query query = session.createQuery(
+                            "select item.id, item.describe, item.created, " +
+                                    "item.done, item.user.name from Task as item");
                     List list = query.list();
                     LOGGER.info("list " + list.size());
-                    list.forEach(System.out::println);
                     return list;
                 }
         );
@@ -89,39 +83,33 @@ public class HibernateStore implements Store, AutoCloseable {
 
     @Override
     public User findUserById(int id) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Query query = session.createQuery("from Task s where s.id = :fId");
-        query.setParameter("fId", id);
-        User user = (User) query.uniqueResult();
-        session.getTransaction().commit();
-        session.close();
-        return user;
+        return tx(
+                session -> {
+                    final Query query = session.createQuery(
+                            "from Task s where s.id = :fId");
+                    query.setParameter("fId", id);
+                    User user = (User) query.uniqueResult();
+                    return user;
+                }
+        );
     }
 
     @Override
     public User findUserByEmail(String email) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Query query = session.createQuery("from User s where s.email = :fEmail");
-        query.setParameter("fEmail", email);
-        User user = (User) query.uniqueResult();
-        System.out.println("!!!!!!!!!!!!!!!!!!!!" + user);
-        session.getTransaction().commit();
-        session.close();
-        if (user == null) {
-            return null;
-        }
-        return user.getEmail().equals(email) ? user : null;
+        return tx(session -> {
+            Query query = session.createQuery("from User s where s.email = :fEmail");
+            query.setParameter("fEmail", email);
+            User user = (User) query.uniqueResult();
+            if (user == null) {
+                return null;
+            }
+            return user.getEmail().equals(email) ? user : null;
+        });
     }
 
     @Override
     public void saveUser(User user) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        session.save(user);
-        session.getTransaction().commit();
-        session.close();
+        tx(session -> session.save(user));
     }
 
     @Override

@@ -26,10 +26,12 @@ public class TaskServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession sc = req.getSession();
         User user = (User) sc.getAttribute("user");
-            List<Task> list;
+        List<Object> list;
+
+        Gson gson = new Gson();
         if (user != null) {
             list = new ArrayList<>(HibernateStore.instOf().findAllTasks(user.getId()));
-        String json = new Gson().toJson(list);
+        String json = gson.toJson(list);
         LOGGER.info(json);
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");

@@ -9,10 +9,11 @@ $.ajax({
     let mainCheckbox = $('#showTasks');
     mainCheckbox.prop('checked', true);
     for (let i = 0; i < data.length; data[i++]) {
-        let idNum = data[i].id;
-        let message = data[i].describe;
-        let date = data[i].created;
-        let state = data[i].done;
+        let idNum = data[i][0];
+        let message = data[i][1];
+        let date = data[i][2];
+        let state = data[i][3];
+        let user = data[i][4];
         let status;
         state ? status = ' в работе' : status = " выполнено";
         let el = `<label><input type="checkbox" id="${idNum}"><span>${status}</span></label>`;
@@ -22,6 +23,9 @@ $.ajax({
                     .text(message)
                 ).append($('<td>')
                     .text(date)
+                )
+                .append($('<td>')
+                    .text(user)
                 ).append($('<td >')
                     .append($(el)))
             );
