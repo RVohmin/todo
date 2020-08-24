@@ -13,6 +13,7 @@ create table item
     done     boolean,
     user_id  int not null references users (id)
 );
-
+select item.describe, item.created, item.done, users.name from item join users on item.user_id =
+                                                                                  users.id;
 
 
