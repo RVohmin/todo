@@ -69,7 +69,7 @@ public class HibernateStore implements Store, AutoCloseable {
 
     @Override
     public void updateTask(String id, boolean done) {
-        this.tx(
+        tx(
                 session -> {
                     final Query query = session.createQuery(
                             "update Task s set s.done = :newDone where s.id = :fId");

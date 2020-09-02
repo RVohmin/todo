@@ -26,12 +26,11 @@ public class AuthServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         User user = HibernateStore.instOf().findUserByEmail(email);
-        System.out.println(user);
         if (user != null) {
             if (!user.getPassword().equals(password)) {
-                req.setAttribute("error", "Не верный email или пароль");
-                System.out.println("неверный пароль");
-                req.getRequestDispatcher("login.jsp").forward(req, resp);
+//                req.setAttribute("error", "Не верный email или пароль");
+//                System.out.println("неверный пароль");
+//                req.getRequestDispatcher("login.jsp").forward(req, resp);
             }
             sc.setAttribute("user", user);
             resp.sendRedirect(req.getContextPath() + "/index.do");
