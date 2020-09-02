@@ -11,11 +11,11 @@
  
  
  При разработке приложения использованы технологии:
- * HTML, JS, JQuery
+ * HTML, CSS3, JS, JQuery
  * Java 14
  * Apache Maven
  * Apache Tomcat 9
- * JSTL
+ * JSP, JSTL
  * Servlet Api
  * Ajax
  * PostgreSQL
