@@ -3,11 +3,11 @@ package ru.job4j.todo.service;
 import ru.job4j.todo.persistence.Task;
 import ru.job4j.todo.persistence.User;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface Store {
     void saveTask(Task task);
-    Collection<Task> findAllTasks(int id);
+    List findAllTaskByUserId(int id);
     void updateTask(String id, boolean done);
 
     User findUserById(int id);

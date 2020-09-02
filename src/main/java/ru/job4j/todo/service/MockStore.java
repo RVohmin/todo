@@ -5,7 +5,7 @@ import ru.job4j.todo.persistence.User;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -37,7 +37,7 @@ public class MockStore implements Store {
     }
 
     @Override
-    public Collection<Task> findAllTasks(int id) {
+    public List findAllTaskByUserId(int id) {
         return null;
     }
 

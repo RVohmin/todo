@@ -6,15 +6,12 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.query.Query;
 import ru.job4j.todo.persistence.Task;
 import ru.job4j.todo.persistence.User;
 
-import java.util.Collection;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.function.Function;
-
-import static ru.job4j.todo.controller.TaskServlet.LOGGER;
 
 public class HibernateStore implements Store, AutoCloseable {
     private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
@@ -54,17 +51,20 @@ public class HibernateStore implements Store, AutoCloseable {
     }
 
     @Override
-    public Collection<Task> findAllTasks(int id) {
-        return tx(
-                session -> {
-                    Query query = session.createQuery(
-                            "select item.id, item.describe, item.created, " +
-                                    "item.done, item.user.name from Task as item");
-                    List list = query.list();
-                    LOGGER.info("list " + list.size());
-                    return list;
-                }
-        );
+    public List findAllTaskByUserId(int id) {
+        return tx(session -> session.createQuery("from Task t where t.user.id = " + id).list());
+//        tx(
+//                session -> {
+//                    Query query = session.createQuery(
+//                            "select item.id, item.describe, item.created, " +
+//                                    "item.done, item.user.name from Task as item");
+//                    query.executeUpdate();
+//                    List list = query.list();
+//                    LOGGER.info("list " + list.size());
+//                    return list;
+//                }
+//        );
+//        return tx;
     }
 
     @Override
@@ -85,11 +85,10 @@ public class HibernateStore implements Store, AutoCloseable {
     public User findUserById(int id) {
         return tx(
                 session -> {
-                    final Query query = session.createQuery(
+                    final org.hibernate.query.Query<?> query = session.createQuery(
                             "from Task s where s.id = :fId");
                     query.setParameter("fId", id);
-                    User user = (User) query.uniqueResult();
-                    return user;
+                    return (User) query.uniqueResult();
                 }
         );
     }
@@ -99,7 +98,7 @@ public class HibernateStore implements Store, AutoCloseable {
         return tx(session -> {
             Query query = session.createQuery("from User s where s.email = :fEmail");
             query.setParameter("fEmail", email);
-            User user = (User) query.uniqueResult();
+            User user = (User) query.getSingleResult();
             if (user == null) {
                 return null;
             }

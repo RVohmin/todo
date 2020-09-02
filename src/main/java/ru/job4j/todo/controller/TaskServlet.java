@@ -30,7 +30,7 @@ public class TaskServlet extends HttpServlet {
 
         Gson gson = new Gson();
         if (user != null) {
-            list = new ArrayList<>(HibernateStore.instOf().findAllTasks(user.getId()));
+            list = new ArrayList<>(HibernateStore.instOf().findAllTaskByUserId(user.getId()));
         String json = gson.toJson(list);
         LOGGER.info(json);
         resp.setContentType("application/json");
