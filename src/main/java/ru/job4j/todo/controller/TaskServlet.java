@@ -30,9 +30,9 @@ public class TaskServlet extends HttpServlet {
 
         Gson gson = new Gson();
         if (user != null) {
-            list = new ArrayList<>(HibernateStore.instOf().findAllTaskByUserId(user.getId()));
+            list = new ArrayList<Object>(HibernateStore.instOf().findAllTaskByUserId(user.getId()));
         String json = gson.toJson(list);
-        LOGGER.info(json);
+        LOGGER.info("TaskServlet = " + json);
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         PrintWriter out = new PrintWriter(resp.getOutputStream());

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static ru.job4j.todo.controller.TaskServlet.LOGGER;
+
 /**
  * ru.job4j.dream.servlet
  *
@@ -28,11 +30,12 @@ public class AuthServlet extends HttpServlet {
         User user = HibernateStore.instOf().findUserByEmail(email);
         if (user != null) {
             if (!user.getPassword().equals(password)) {
-//                req.setAttribute("error", "Не верный email или пароль");
-//                System.out.println("неверный пароль");
-//                req.getRequestDispatcher("login.jsp").forward(req, resp);
+                req.setAttribute("error", "Не верный email или пароль");
+                System.out.println("неверный пароль");
+                req.getRequestDispatcher("login.jsp").forward(req, resp);
             }
             sc.setAttribute("user", user);
+            LOGGER.debug("--------------------------------- user = " + user);
             resp.sendRedirect(req.getContextPath() + "/index.do");
         } else {
             resp.sendRedirect(req.getContextPath() + "/login.jsp");

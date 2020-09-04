@@ -18,8 +18,6 @@
         <%@include file='base.css' %>
         <%@include file='main.css' %>
     </style>
-<%--    <link rel="stylesheet" href="base.css">--%>
-<%--    <link rel="stylesheet" href="main.css">--%>
     <title>TODO List</title>
     <script src="script.js" type="text/javascript"></script>
 </head>

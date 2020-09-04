@@ -6,12 +6,14 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
 import ru.job4j.todo.persistence.Task;
 import ru.job4j.todo.persistence.User;
 
-import javax.persistence.Query;
 import java.util.List;
 import java.util.function.Function;
+
+import static ru.job4j.todo.controller.TaskServlet.LOGGER;
 
 public class HibernateStore implements Store, AutoCloseable {
     private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
@@ -52,18 +54,18 @@ public class HibernateStore implements Store, AutoCloseable {
 
     @Override
     public List findAllTaskByUserId(int id) {
-        return tx(session -> session.createQuery("from Task t where t.user.id = " + id).list());
-//        tx(
-//                session -> {
-//                    Query query = session.createQuery(
-//                            "select item.id, item.describe, item.created, " +
-//                                    "item.done, item.user.name from Task as item");
-//                    query.executeUpdate();
-//                    List list = query.list();
-//                    LOGGER.info("list " + list.size());
-//                    return list;
-//                }
-//        );
+        LOGGER.debug(" findAllTaskByUserId id = {}" + id);
+        return tx(
+                session -> {
+                    Query query = session.createQuery(
+                            "select item.id, item.describe, item.created, " +
+                                    "item.done, item.user.name from Task as item");
+                    List list = query.list();
+                    LOGGER.info("list " + list.size());
+                    list.forEach(System.out::println);
+                    return list;
+                }
+        );
 //        return tx;
     }
 
